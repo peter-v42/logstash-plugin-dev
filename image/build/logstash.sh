@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+cd /build
+git config --global advice.detachedHead false
+git clone --depth 1 -b v${LOGSTASH_VERSION} --single-branch https://github.com/elastic/logstash.git 
+# we only need two files from this logstash repository ...
+cp /build/logstash/rubyUtils.gradle /usr/share/logstash/
+cp /build/logstash/versions.yml /usr/share/logstash/
+rm -rf /build/logstash
+
+cd /build
+git clone https://github.com/logstash-plugins/logstash-input-java_input_example.git 
+cd /build/logstash-input-java_input_example/
+echo "LOGSTASH_CORE_PATH=/usr/share/logstash/logstash-core" >gradle.properties
+./gradlew gem
+
+logstash-plugin install --no-verify --local /build/logstash-input-java_input_example/logstash-input-java_input_example-1.0.3.gem
+echo "input {
+  java_input_example {}
+}
+output {
+  stdout { codec => rubydebug }
+}" >java_input.conf
+logstash -f /build/logstash-input-java_input_example/java_input.conf

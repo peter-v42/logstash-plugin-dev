@@ -11,9 +11,13 @@ rm -rf /build/logstash
 
 cd /build
 git clone https://github.com/logstash-plugins/logstash-codec-java_codec_example.git
+echo "LOGSTASH_CORE_PATH=/usr/share/logstash/logstash-core" >logstash-codec-java_codec_example/gradle.properties
 git clone https://github.com/logstash-plugins/logstash-filter-java_filter_example.git
+echo "LOGSTASH_CORE_PATH=/usr/share/logstash/logstash-core" >logstash-filter-java_filter_example/gradle.properties
 git clone https://github.com/logstash-plugins/logstash-input-java_input_example.git
+echo "LOGSTASH_CORE_PATH=/usr/share/logstash/logstash-core" >logstash-input-java_input_example/gradle.properties
 git clone https://github.com/logstash-plugins/logstash-output-java_output_example.git
+echo "LOGSTASH_CORE_PATH=/usr/share/logstash/logstash-core" >logstash-output-java_output_example/gradle.properties
 rm -rf */.git */.gitignore */README.md */gradlew.bat
 
 mkdir /build/test
